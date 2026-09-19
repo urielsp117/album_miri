@@ -5,81 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestro Álbum de Momentos</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cream: #FBF1E4;
+            --cream-deep: #F4E4CD;
+            --blush: #F3D7CB;
+            --blush-deep: #E8B8AC;
+            --toffee: #C6905F;
+            --toffee-deep: #A9713F;
+            --cocoa: #6B4226;
+            --cocoa-soft: #8B5E3C;
+            --rose: #E39C97;
+            --paper: #FFFDF9;
+        }
+
         body {
-            background-color: #f0f7ff;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(243, 215, 203, 0.55) 0%, transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(198, 144, 95, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 50% 95%, rgba(227, 156, 151, 0.25) 0%, transparent 50%);
             font-family: 'Quicksand', sans-serif;
             overflow-x: hidden;
+            color: var(--cocoa);
         }
 
-        .cursive {
-            font-family: 'Dancing Script', cursive;
-        }
+        .cursive { font-family: 'Dancing Script', cursive; }
 
-        /* Fondo con degradado suave */
-        .bg-soft {
-            background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 100%);
-        }
-
-        /* Animación de flores azules */
-        .flower {
+        /* Textura sutil de huellitas de patita */
+        .paw-texture {
             position: fixed;
-            top: -10%;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23C6905F' opacity='0.12'%3E%3Cellipse cx='30' cy='40' rx='6' ry='8'/%3E%3Ccircle cx='22' cy='28' r='3.2'/%3E%3Ccircle cx='30' cy='24' r='3.4'/%3E%3Ccircle cx='38' cy='28' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 140px 140px;
+        }
+
+        /* Lluvia de detalles tiernos (patitas, quesito, corazones) */
+        .falling-item {
+            position: fixed;
+            top: -8%;
             z-index: 0;
             pointer-events: none;
             animation: fall linear infinite;
+            opacity: 0;
         }
 
         @keyframes fall {
-            0% { 
-                transform: translateY(0) rotate(0deg) translateX(0); 
-                opacity: 0;
-            }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { 
-                transform: translateY(110vh) rotate(720deg) translateX(50px); 
-                opacity: 0; 
-            }
+            0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+            10% { opacity: 0.75; }
+            88% { opacity: 0.7; }
+            100% { transform: translateY(112vh) rotate(200deg) translateX(40px); opacity: 0; }
         }
 
-        /* Marcos de fotos tipo Polaroid */
+        /* Marcos de fotos estilo scrapbook */
         .photo-frame {
-            background: white;
-            padding: 15px 15px 40px 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            background: var(--paper);
+            padding: 14px 14px 42px 14px;
+            box-shadow: 0 12px 28px rgba(107, 66, 38, 0.14);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             position: relative;
-            border: 1px solid #e2e8f0;
+            border: 2px solid var(--cream-deep);
+            border-radius: 10px;
         }
 
         .photo-frame:hover {
             transform: scale(1.05) rotate(0deg) !important;
             z-index: 10;
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 22px 42px rgba(169, 113, 63, 0.28);
         }
 
         .photo-frame img {
             width: 100%;
             height: 250px;
             object-fit: cover;
-            border-radius: 2px;
+            border-radius: 4px;
         }
 
         .photo-caption {
             position: absolute;
-            bottom: 10px;
+            bottom: 9px;
             left: 0;
             right: 0;
             text-align: center;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.2rem;
-            color: #475569;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--cocoa-soft);
         }
 
-        /* Floating effect for header */
+        /* Washi tape decorativa sobre los marcos */
+        .washi {
+            position: absolute;
+            top: -14px;
+            width: 62px;
+            height: 26px;
+            opacity: 0.88;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            z-index: 5;
+        }
+        .washi::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(115deg, rgba(255,255,255,0.35) 0 4px, transparent 4px 9px);
+        }
+        .washi-blush { background: var(--blush-deep); }
+        .washi-toffee { background: var(--toffee); }
+        .washi-rose { background: var(--rose); }
+
+        /* Sticker de patita en la esquina de algunos marcos */
+        .paw-sticker {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            z-index: 5;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.12));
+        }
+
         .float {
             animation: floating 3s ease-in-out infinite;
         }
@@ -89,114 +136,281 @@
             50% { transform: translateY(-10px); }
         }
 
-        .float {
-            animation: floating 3s ease-in-out infinite;
+        .peek-mouse {
+            animation: peek 4s ease-in-out infinite;
         }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes peek {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(-3deg); }
         }
 
         .spotify-card {
             transition: all 0.3s ease;
-            border: 1px solid rgba(29, 185, 84, 0.2);
+            border: 2px solid var(--blush-deep);
         }
 
         .spotify-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(29, 185, 84, 0.15);
-            background-color: #ffffff;
+            box-shadow: 0 14px 32px rgba(169, 113, 63, 0.2);
+            background-color: var(--paper);
         }
 
-                /* Estilo para la foto destacada final */
         .featured-photo {
             max-width: 500px;
             margin: 0 auto;
             transform: rotate(0deg);
-            padding: 20px 20px 60px 20px;
+            padding: 20px 20px 62px 20px;
         }
-        
-        .featured-photo img {
-            height: 400px;
+
+        .featured-photo img { height: 400px; }
+
+        .scallop {
+            display: block;
+            width: 100%;
+            height: 44px;
+        }
+
+        .corner-mascot {
+            position: fixed;
+            bottom: -6px;
+            right: 10px;
+            width: 110px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 640px) {
+            .corner-mascot { width: 74px; }
         }
     </style>
 </head>
-<body class="bg-soft min-h-screen">
+<body class="min-h-screen relative">
 
-    <!-- Contenedor para la lluvia de flores -->
-    <div id="flower-container" class="fixed inset-0 pointer-events-none z-0"></div>
+    <!-- Definiciones de íconos ilustrados (roedores y accesorios) -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <symbol id="icon-mouse" viewBox="0 0 120 120">
+                <ellipse cx="60" cy="76" rx="34" ry="30" fill="#FBF1E4" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="34" cy="34" r="15" fill="#FBF1E4" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="86" cy="34" r="15" fill="#FBF1E4" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="34" cy="34" r="7" fill="#E39C97"/>
+                <circle cx="86" cy="34" r="7" fill="#E39C97"/>
+                <circle cx="60" cy="58" r="26" fill="#FBF1E4" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="50" cy="55" r="3.4" fill="#6B4226"/>
+                <circle cx="70" cy="55" r="3.4" fill="#6B4226"/>
+                <ellipse cx="60" cy="65" rx="5" ry="3.6" fill="#E39C97"/>
+                <path d="M40 68 Q25 66 14 70" stroke="#6B4226" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <path d="M40 72 Q24 74 13 78" stroke="#6B4226" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <path d="M80 68 Q95 66 106 70" stroke="#6B4226" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <path d="M80 72 Q96 74 107 78" stroke="#6B4226" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                <path d="M92 88 Q112 78 110 60" stroke="#6B4226" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <ellipse cx="42" cy="104" rx="9" ry="6" fill="#FBF1E4" stroke="#6B4226" stroke-width="2"/>
+                <ellipse cx="78" cy="104" rx="9" ry="6" fill="#FBF1E4" stroke="#6B4226" stroke-width="2"/>
+            </symbol>
+
+            <symbol id="icon-hamster" viewBox="0 0 120 110">
+                <ellipse cx="60" cy="66" rx="40" ry="34" fill="#C6905F" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="34" cy="28" r="12" fill="#C6905F" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="86" cy="28" r="12" fill="#C6905F" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="34" cy="28" r="5.5" fill="#E39C97"/>
+                <circle cx="86" cy="28" r="5.5" fill="#E39C97"/>
+                <circle cx="60" cy="52" r="28" fill="#EAD2AE" stroke="#6B4226" stroke-width="2.5"/>
+                <ellipse cx="38" cy="60" rx="13" ry="10" fill="#F3D7CB" stroke="#6B4226" stroke-width="2"/>
+                <ellipse cx="82" cy="60" rx="13" ry="10" fill="#F3D7CB" stroke="#6B4226" stroke-width="2"/>
+                <circle cx="49" cy="48" r="3.2" fill="#6B4226"/>
+                <circle cx="71" cy="48" r="3.2" fill="#6B4226"/>
+                <ellipse cx="60" cy="58" rx="4.5" ry="3.2" fill="#6B4226"/>
+                <ellipse cx="42" cy="94" rx="10" ry="6" fill="#EAD2AE" stroke="#6B4226" stroke-width="2"/>
+                <ellipse cx="78" cy="94" rx="10" ry="6" fill="#EAD2AE" stroke="#6B4226" stroke-width="2"/>
+            </symbol>
+
+            <symbol id="icon-rat" viewBox="0 0 130 110">
+                <ellipse cx="62" cy="72" rx="36" ry="28" fill="#DCD3C6" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="38" cy="34" r="14" fill="#DCD3C6" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="88" cy="34" r="14" fill="#DCD3C6" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="38" cy="34" r="6.5" fill="#E39C97"/>
+                <circle cx="88" cy="34" r="6.5" fill="#E39C97"/>
+                <circle cx="63" cy="54" r="25" fill="#DCD3C6" stroke="#6B4226" stroke-width="2.5"/>
+                <circle cx="53" cy="52" r="3.2" fill="#6B4226"/>
+                <circle cx="73" cy="52" r="3.2" fill="#6B4226"/>
+                <ellipse cx="63" cy="62" rx="4.5" ry="3.2" fill="#E39C97"/>
+                <path d="M96 84 Q124 90 118 66 Q114 84 96 84" fill="none" stroke="#6B4226" stroke-width="3" stroke-linecap="round"/>
+                <path d="M50 30 Q63 18 76 30" fill="none" stroke="#E39C97" stroke-width="4" stroke-linecap="round"/>
+            </symbol>
+
+            <symbol id="icon-paw" viewBox="0 0 40 40">
+                <ellipse cx="20" cy="26" rx="9" ry="11" fill="#8B5E3C"/>
+                <circle cx="9" cy="12" r="5" fill="#8B5E3C"/>
+                <circle cx="19" cy="7" r="5.4" fill="#8B5E3C"/>
+                <circle cx="30" cy="12" r="5" fill="#8B5E3C"/>
+            </symbol>
+
+            <symbol id="icon-cheese" viewBox="0 0 60 50">
+                <path d="M4 44 L30 6 L56 44 Z" fill="#F4C95D" stroke="#A9713F" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="30" cy="30" r="4" fill="#E8AE3E"/>
+                <circle cx="22" cy="38" r="3" fill="#E8AE3E"/>
+                <circle cx="38" cy="36" r="2.6" fill="#E8AE3E"/>
+            </symbol>
+
+            <symbol id="icon-heart" viewBox="0 0 30 30">
+                <path d="M15 26 C-2 15 2 2 15 9 C28 2 32 15 15 26 Z" fill="#E39C97"/>
+            </symbol>
+
+            <symbol id="icon-yarn" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="24" fill="#E8B8AC" stroke="#6B4226" stroke-width="2"/>
+                <path d="M10 22 Q30 30 50 20" stroke="#A9713F" stroke-width="2" fill="none"/>
+                <path d="M8 32 Q30 40 52 30" stroke="#A9713F" stroke-width="2" fill="none"/>
+                <path d="M12 42 Q30 48 48 40" stroke="#A9713F" stroke-width="2" fill="none"/>
+                <path d="M46 46 Q58 52 62 62" stroke="#6B4226" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="paw-texture"></div>
+    <div id="falling-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Mascota fija en la esquina -->
+    <svg class="corner-mascot" viewBox="0 0 120 110"><use href="#icon-hamster"/></svg>
 
     <!-- Encabezado -->
-    <header class="relative pt-16 pb-8 text-center z-10">
-        <h1 class="text-5xl md:text-7xl cursive text-blue-600 mb-4 float">Álbum de fotos para el padrino</h1>
-        <p class="text-blue-400 text-lg italic">Perdóname por enojarme :[</p>
-        
+    <header class="relative pt-16 pb-6 text-center z-10 px-4">
+        <div class="flex items-center justify-center gap-3 md:gap-6">
+            <svg class="w-12 h-12 md:w-20 md:h-20 peek-mouse shrink-0" viewBox="0 0 120 120"><use href="#icon-mouse"/></svg>
+            <h1 class="text-3xl md:text-6xl cursive text-[#8B5E3C] float">Álbum de fotos para el padrino</h1>
+            <svg class="w-12 h-12 md:w-20 md:h-20 peek-mouse shrink-0" style="animation-delay: -2s; transform: scaleX(-1);" viewBox="0 0 130 110"><use href="#icon-rat"/></svg>
+        </div>
+        <p class="text-[#A9713F] text-lg italic mt-3">Te amo</p>
+
         <div class="flex justify-center mt-6">
-            <svg width="200" height="40" viewBox="0 0 200 40">
-                <path d="M0 20 Q50 0 100 20 T200 20" fill="none" stroke="#93c5fd" stroke-width="2"/>
-                <path d="M90 20 Q100 10 110 20 T100 30 T90 20" fill="#60a5fa" />
+            <svg width="220" height="30" viewBox="0 0 220 30">
+                <path d="M0 15 Q55 -3 110 15 T220 15" fill="none" stroke="#E8B8AC" stroke-width="2.5"/>
+                <use href="#icon-paw" x="100" y="2" width="20" height="20" opacity="0.85"/>
             </svg>
         </div>
     </header>
 
+    <!-- Intro de la galería -->
+    <div class="text-center relative z-10 mb-2">
+        <p class="cursive text-2xl md:text-3xl text-[#A9713F]">Nuestros momentos favoritos</p>
+    </div>
+
     <!-- Galería -->
-    <main class="container mx-auto px-4 py-12 relative z-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-            
+    <main class="container mx-auto px-4 py-10 relative z-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
+
             <div class="photo-frame" style="transform: rotate(-3deg);">
+                <div class="washi washi-blush" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
                 <img src="img/cita_1.jpeg" alt="Nuestra primera cita">
-                <div class="photo-caption">Nuestra primera cita</div>
+                <div class="photo-caption">Tim Burton</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(2deg);">
-                <img src="img/c_2.jpeg"Bajo las estrellas">
+                <div class="washi washi-toffee" style="left: 50%; transform: translateX(-50%) rotate(5deg);"></div>
+                <svg class="paw-sticker" style="top: -10px; right: -8px; transform: rotate(15deg);" viewBox="0 0 40 40"><use href="#icon-paw"/></svg>
+                <img src="img/c_2.jpeg" alt="Bajo las estrellas en Chapultepec">
                 <div class="photo-caption">Chapultepec</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(-2deg);">
-                <img src="img/c_3.jpeg" alt="Risas inolvidables">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-4deg);"></div>
+                <img src="img/c_3.jpeg" alt="Risas inolvidables en Morelia">
                 <div class="photo-caption">Morelia</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(4deg);">
-                <img src="img/c_4.jpeg" alt="Aventuras juntos">
+                <div class="washi washi-toffee" style="left: 50%; transform: translateX(-50%) rotate(7deg);"></div>
+                <img src="img/c_4.jpeg" alt="Día de Muertos juntos">
                 <div class="photo-caption">Día de Muertos</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(-1deg);">
-                <img src="img/c_5.jpeg" alt="Tu sonrisa">
+                <div class="washi washi-blush" style="left: 50%; transform: translateX(-50%) rotate(-3deg);"></div>
+                <svg class="paw-sticker" style="bottom: 34px; left: -8px; transform: rotate(-20deg);" viewBox="0 0 40 40"><use href="#icon-paw"/></svg>
+                <img src="img/c_5.jpeg" alt="Un día en Six Flags">
                 <div class="photo-caption">Six Flags</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(3deg);">
-                <img src="img/c_6.jpeg" alt="Por siempre">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(6deg);"></div>
+                <img src="img/c_6.jpeg" alt="Recuerdo del sarampión">
                 <div class="photo-caption">Sarampión xD</div>
             </div>
 
             <div class="photo-frame" style="transform: rotate(3deg);">
-                <img src="img/c_7.jpeg" alt="Por siempre">
+                <div class="washi washi-toffee" style="left: 50%; transform: translateX(-50%) rotate(-5deg);"></div>
+                <img src="img/C_7.jpeg" alt="Día de dinosaurios">
                 <div class="photo-caption">Dinosaurios</div>
             </div>
 
-            <div class="photo-frame" style="transform: rotate(3deg);">
-                <img src="img/c_8.jpeg" alt="Por siempre">
+            <div class="photo-frame" style="transform: rotate(-3deg);">
+                <div class="washi washi-blush" style="left: 50%; transform: translateX(-50%) rotate(4deg);"></div>
+                <svg class="paw-sticker" style="top: -10px; right: -6px; transform: rotate(-10deg);" viewBox="0 0 40 40"><use href="#icon-paw"/></svg>
+                <img src="img/c_8.jpeg" alt="Celebrando año nuevo">
                 <div class="photo-caption">Año nuevo</div>
             </div>
 
-            <div class="photo-frame" style="transform: rotate(3deg);">
-                <img src="img/c_9.jpeg" alt="Por siempre">
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_9.jpeg" alt="Un recuerdo más">
                 <div class="photo-caption">No me acuerdo</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_10.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">Museo Bimbo</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_12.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">Pan chino del chino de china</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_13.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">Billar de mala muerte</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_14.jpeg" alt="Un recuerdo más">
+                <img src="img/c_18.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">Mascarillas XDDDDDDDDDD</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_15.jpeg" alt="Un recuerdo más">
+                <img src="img/c_17.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">XV Años</div>
+            </div>
+
+            <div class="photo-frame" style="transform: rotate(2deg);">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-6deg);"></div>
+                <img src="img/c_16.jpeg" alt="Un recuerdo más">
+                <img src="img/c_16_2.jpeg" alt="Un recuerdo más">
+                <div class="photo-caption">Mi cumpleeee</div>
             </div>
 
         </div>
     </main>
 
+    <!-- Separador decorativo -->
+    <div class="relative z-10 flex justify-center items-center gap-4 my-6 px-4">
+        <span class="h-px bg-[#E8B8AC] flex-1 max-w-[120px]"></span>
+        <svg class="w-9 h-9" viewBox="0 0 60 50"><use href="#icon-cheese"/></svg>
+        <span class="h-px bg-[#E8B8AC] flex-1 max-w-[120px]"></span>
+    </div>
+
     <!-- Footer / Mensaje Final -->
-    <footer class="text-center py-20 px-4 z-10 relative">
-         <!-- Sección Spotify -->
-         <div class="max-w-md mx-auto mb-16">
-            <a href="https://open.spotify.com/intl-es/track/09QfIIP4NUx4A3thmovb2o?si=6b42dac47fa24f59" target="_blank" class="spotify-card block bg-white/80 p-6 rounded-2xl shadow-sm flex items-center justify-between group">
+    <footer class="text-center py-16 px-4 z-10 relative">
+        <!-- Sección Spotify -->
+        <div class="max-w-md mx-auto mb-16 relative">
+            <svg class="w-12 h-12 absolute -top-7 -left-3 -rotate-12" viewBox="0 0 60 60"><use href="#icon-yarn"/></svg>
+            <a href="https://open.spotify.com/intl-es/track/3GSMdtJphymHEsR8K9jT5Q?si=c3fe6d601f1442b1" target="_blank" class="spotify-card block bg-white/85 p-6 rounded-2xl shadow-sm flex items-center justify-between group">
                 <div class="flex items-center space-x-4">
                     <div class="bg-[#1DB954] p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -205,86 +419,74 @@
                     </div>
                     <div class="text-left">
                         <p class="text-sm font-bold text-[#1DB954] uppercase tracking-wider">Para tí mi panquesito de plátano</p>
-                        <p class="text-lg font-semibold text-gray-700 cursive">Haz clic para escuchar...</p>
+                        <p class="text-lg font-semibold text-[#6B4226] cursive">Haz clic para escuchar...</p>
                     </div>
                 </div>
-                <div class="text-blue-300 group-hover:text-blue-500 transition-colors">
+                <div class="text-[#C6905F] group-hover:text-[#8B5E3C] transition-colors">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </div>
             </a>
         </div>
 
         <!-- Foto Centrada Final -->
-        <div class="mb-16">
+        <div class="mb-16 relative">
+            <svg class="w-16 h-16 absolute left-1/2 -translate-x-1/2 -top-10 peek-mouse" viewBox="0 0 120 120"><use href="#icon-mouse"/></svg>
             <div class="photo-frame featured-photo">
+                <div class="washi washi-rose" style="left: 50%; transform: translateX(-50%) rotate(-4deg);"></div>
                 <img src="img/jeje.jpeg" alt="Nuestra mejor foto">
                 <div class="photo-caption text-2xl">Te observo de ésta manera</div>
             </div>
-            <p class="mt-6 cursive text-blue-400 text-2xl italic">Gracias por soportarme</p>
+            <p class="mt-6 cursive text-[#A9713F] text-2xl italic">Gracias por soportarme</p>
         </div>
 
-        <div class="max-w-2xl mx-auto bg-white/60 p-10 rounded-3xl backdrop-blur-md border border-blue-100 shadow-sm">
-            <h2 class="text-4xl cursive text-blue-500 mb-6">Para mi persona favorita</h2>
-            <p class="text-gray-600 text-lg leading-relaxed">
-                Gracias por llenar mis días de colores y por ser el motivo de mis mejores sonrisas. 
+        <div class="max-w-2xl mx-auto bg-white/70 p-10 rounded-3xl backdrop-blur-md border-2 border-[#F3D7CB] shadow-sm relative">
+            <svg class="w-14 h-14 absolute -right-5 -top-6 rotate-12" viewBox="0 0 120 110"><use href="#icon-hamster"/></svg>
+            <h2 class="text-4xl cursive text-[#A9713F] mb-6">Para mi persona favorita</h2>
+            <p class="text-[#6B4226] text-lg leading-relaxed">
+                Gracias por llenar mis días de colores y por ser el motivo de mis mejores sonrisas.
                 Tenemos que extender el álbum.
             </p>
-            <div class="mt-8 text-blue-400 text-3xl">💙</div>
+            <div class="mt-8 flex justify-center gap-2">
+                <svg class="w-7 h-7" viewBox="0 0 30 30"><use href="#icon-heart"/></svg>
+                <svg class="w-7 h-7" viewBox="0 0 40 40"><use href="#icon-paw"/></svg>
+                <svg class="w-7 h-7" viewBox="0 0 30 30"><use href="#icon-heart"/></svg>
+            </div>
         </div>
-        <p class="mt-12 text-sm text-blue-300 uppercase tracking-widest font-medium">Hecho con amor para ti</p>
+        <p class="mt-12 text-sm text-[#C6905F] uppercase tracking-widest font-medium">Hecho con amor para ti</p>
     </footer>
 
     <script>
-        // Función para crear una flor SVG detallada
-        function createFlower() {
-            const container = document.getElementById('flower-container');
-            const flower = document.createElement('div');
-            flower.className = 'flower';
-            
-            // Colores de flores azules variados
-            const colors = ['#93c5fd', '#60a5fa', '#bfdbfe', '#3b82f6'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Creamos un diseño de flor de 5 pétalos con SVG
-            flower.innerHTML = `
-                <svg width="30" height="30" viewBox="0 0 100 100">
-                    <g fill="${randomColor}" opacity="0.7">
-                        <circle cx="50" cy="30" r="25" />
-                        <circle cx="75" cy="50" r="25" />
-                        <circle cx="65" cy="75" r="25" />
-                        <circle cx="35" cy="75" r="25" />
-                        <circle cx="25" cy="50" r="25" />
-                    </g>
-                    <circle cx="50" cy="50" r="12" fill="#fff9c4" />
-                </svg>
-            `;
-            
+        function createFallingItem() {
+            const container = document.getElementById('falling-container');
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+
+            const icons = ['icon-paw', 'icon-paw', 'icon-heart', 'icon-cheese'];
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+
+            item.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 40 40"><use href="#${icon}"/></svg>`;
+
             const startPos = Math.random() * window.innerWidth;
-            const duration = 7 + Math.random() * 8;
-            const size = 15 + Math.random() * 25;
+            const duration = 10 + Math.random() * 8;
+            const size = 16 + Math.random() * 14;
             const delay = Math.random() * 5;
-            
-            flower.style.left = startPos + 'px';
-            flower.style.animationDuration = duration + 's';
-            flower.style.animationDelay = -delay + 's'; // Empezar en diferentes puntos de la animación
-            flower.style.width = size + 'px';
-            flower.style.height = size + 'px';
-            
-            container.appendChild(flower);
-            
-            // Limpieza: eliminar la flor cuando termine de caer
-            setTimeout(() => {
-                flower.remove();
-            }, (duration + delay) * 1000);
+
+            item.style.left = startPos + 'px';
+            item.style.animationDuration = duration + 's';
+            item.style.animationDelay = -delay + 's';
+            item.style.width = size + 'px';
+            item.style.height = size + 'px';
+
+            container.appendChild(item);
+
+            setTimeout(() => { item.remove(); }, (duration + delay) * 1000);
         }
 
-        // Generar flores inicialmente
-        for(let i=0; i<30; i++) {
-            createFlower();
+        // Cantidad moderada para que no se vea saturado
+        for (let i = 0; i < 10; i++) {
+            createFallingItem();
         }
-
-        // Mantener la lluvia constante
-        setInterval(createFlower, 400);
+        setInterval(createFallingItem, 1400);
     </script>
 </body>
 </html>
